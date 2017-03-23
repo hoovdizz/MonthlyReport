@@ -32,18 +32,14 @@ New-Item $directory -type directory
 
 
 #File Names
-$fileName = $Directory +"\exchange2010Report "+( get-date ).ToString('MM_dd_yyyy')+".html"
-$NewAccounts = $Directory +"\New LYCO Accounts Last 30 Days_" + $rundate + ".csv" 
-$NewAccountsDPS = $Directory +"\New DPS Accounts Last 30 Days_" + $rundate + ".csv" 
-$NewAccountsRMS = $Directory +"\New RMS Accounts Last 30 Days_" + $rundate + ".csv" 
-$NewComputers = $Directory +"\New LYCO Computers Last 30 Days_" + $rundate + ".csv" 
-$NewComputersDPS = $Directory +"\New DPS Computers Last 30 Days_" + $rundate + ".csv" 
-$NewComputersRMS = $Directory +"\New RMS Computers Last 30 Days_" + $rundate + ".csv" 
-$DeletedAD = $Directory +"\AD LYCO object deleted Last 30 Days_" + $rundate + ".csv" 
-$DeletedADDPS = $Directory +"\AD DPS object deleted Last 30 Days_" + $rundate + ".csv" 
-$DeletedADRMS = $Directory +"\AD RMS object deleted Last 30 Days_" + $rundate + ".csv" 
+$fileName = $Directory +"\exchangeReport "+( get-date ).ToString('MM_dd_yyyy')+".html"
+$NewAccounts = $Directory +"\New Accounts Last 30 Days_" + $rundate + ".csv" 
+$NewComputers = $Directory +"\New Computers Last 30 Days_" + $rundate + ".csv" 
+$DeletedAD = $Directory +"\AD object deleted Last 30 Days_" + $rundate + ".csv" 
+$allusersfile = = $Directory +"\All Users" + $rundate + ".csv" 
 $outfile = $Directory + "\email_stats_" + $startdateX + " to " + $EndDateX + ".csv" 
 $dl_stat_file = $Directory + "\DL_stats____" + $startdateX + " to " + $EndDateX + ".csv"
+
 
  
 
@@ -56,6 +52,8 @@ Get-ADcomputer -Server $CHDomain -Filter * -Properties whenCreated | Where-Objec
 #get everything that has been deleted in last 30 days
 get-adobject -Server $CHDomain -filter {(isdeleted -eq $true) -and (objectclass -ne "container") -and (objectclass -ne "dnsnode")} -IncludeDeletedObjects -Properties * | sort-object ObjectClass, WhenChanged | Select-Object CN, WhenCreated, WhenChanged, ObjectClass | Export-csv -path $DeletedAD
 
+#Grab all ActiveDirectory Users
+Get-ADUser -filter * -Properties * |select Displayname, Department, Office, Title, Emailaddress, PrimaryGroup, Manager, OfficePhone, FaX, Enabled, WhenCreated, PasswordLastSet |Export-Csv $allusersfile
 
 # emails stats
 $startdate =([datetime]$30daysago)
