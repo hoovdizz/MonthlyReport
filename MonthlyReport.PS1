@@ -36,7 +36,7 @@ $fileName = $Directory +"\exchangeReport "+( get-date ).ToString('MM_dd_yyyy')+"
 $NewAccounts = $Directory +"\New Accounts Last 30 Days_" + $rundate + ".csv" 
 $NewComputers = $Directory +"\New Computers Last 30 Days_" + $rundate + ".csv" 
 $DeletedAD = $Directory +"\AD object deleted Last 30 Days_" + $rundate + ".csv" 
-$allusersfile = $Directory +"\All Users" + $rundate + ".csv" 
+$allusersfile = $Directory +"\All Users_" + $rundate + ".csv" 
 $outfile = $Directory + "\email_stats_" + $startdateX + " to " + $EndDateX + ".csv" 
 $dl_stat_file = $Directory + "\DL_stats____" + $startdateX + " to " + $EndDateX + ".csv"
 
